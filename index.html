@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head><script src="/_sdk/telemetry_sdk.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Belajar Huruf Braille untuk Pemula</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: { jakarta: ['Plus Jakarta Sans', 'sans-serif'] }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+* { font-family: 'Plus Jakarta Sans', sans-serif; }
+.braille-dot { width: 20px; height: 20px; border-radius: 50%; border: 2px solid #1e40af; transition: all 0.2s; }
+.braille-dot.active { background: #f97316; border-color: #f97316; transform: scale(1.2); }
+.braille-dot.inactive { background: #e2e8f0; }
+.page { display: none; }
+.page.active { display: block; }
+.nav-btn.active { background: #1e40af; color: white; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in { animation: fadeIn 0.3s ease; }
+.high-contrast { --bg: #000; --text: #fff; --accent: #ffff00; }
+.high-contrast body, .high-contrast .app-bg { background: #000 !important; color: #fff !important; }
+.high-contrast .card-bg { background: #1a1a1a !important; border: 2px solid #ffff00 !important; color: #fff !important; }
+.high-contrast .nav-btn { color: #fff !important; }
+.high-contrast .nav-btn.active { background: #ffff00 !important; color: #000 !important; }
+.large-text { font-size: 120% !important; }
+.large-text * { font-size: inherit; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app" class="h-full overflow-auto app-bg bg-slate-50"><!-- Accessibility Toolbar -->
+   <div class="bg-blue-900 text-white px-4 py-2 flex flex-wrap gap-2 items-center justify-between text-sm" role="toolbar" aria-label="Toolbar aksesibilitas"><span class="font-semibold">♿ Aksesibilitas:</span>
+    <div class="flex gap-2 flex-wrap"><button onclick="toggleContrast()" class="px-3 py-1 bg-blue-700 rounded hover:bg-blue-600 focus:ring-2 focus:ring-yellow-400" aria-label="Toggle kontras tinggi" accesskey="c">🔲 Kontras</button> <button onclick="toggleLargeText()" class="px-3 py-1 bg-blue-700 rounded hover:bg-blue-600 focus:ring-2 focus:ring-yellow-400" aria-label="Toggle huruf besar" accesskey="l">🔤 Besar</button> <button onclick="speakText('Selamat datang di aplikasi belajar huruf Braille')" class="px-3 py-1 bg-blue-700 rounded hover:bg-blue-600 focus:ring-2 focus:ring-yellow-400" aria-label="Baca halaman" accesskey="s">🔊 Suara</button>
+    </div>
+   </div><!-- Navigation -->
+   <nav class="bg-white shadow-md sticky top-0 z-50" role="navigation" aria-label="Menu utama">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap gap-2 items-center justify-between">
+     <h1 class="text-lg font-bold text-blue-900" id="app-title">📖 Braille</h1>
+     <div class="flex flex-wrap gap-1" role="menubar"><button class="nav-btn active px-3 py-2 rounded-lg text-sm font-medium transition-all focus:ring-2 focus:ring-orange-400" onclick="showPage('home')" role="menuitem" accesskey="1">Beranda</button> <button class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-blue-100 transition-all focus:ring-2 focus:ring-orange-400" onclick="showPage('materi')" role="menuitem" accesskey="2">Materi</button> <button class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-blue-100 transition-all focus:ring-2 focus:ring-orange-400" onclick="showPage('simulator')" role="menuitem" accesskey="3">Simulator</button> <button class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-blue-100 transition-all focus:ring-2 focus:ring-orange-400" onclick="showPage('latihan')" role="menuitem" accesskey="4">Latihan</button> <button class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-blue-100 transition-all focus:ring-2 focus:ring-orange-400" onclick="showPage('kuis')" role="menuitem" accesskey="5">Kuis</button> <button class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-blue-100 transition-all focus:ring-2 focus:ring-orange-400" onclick="showPage('kamus')" role="menuitem" accesskey="6">Kamus</button> <button class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-blue-100 transition-all focus:ring-2 focus:ring-orange-400" onclick="showPage('progress')" role="menuitem" accesskey="7">Kemajuan</button>
+     </div>
+    </div>
+   </nav><!-- Home Page -->
+   <section id="page-home" class="page active fade-in" role="main" aria-label="Beranda">
+    <div class="max-w-4xl mx-auto px-4 py-12 text-center">
+     <div class="bg-gradient-to-br from-blue-600 to-blue-800 text-white rounded-3xl p-8 md:p-12 shadow-2xl mb-8">
+      <div class="text-6xl mb-4">
+       ⠃⠗⠁⠊⠇⠇⠑
+      </div>
+      <h2 class="text-3xl md:text-4xl font-extrabold mb-4" id="main-title">Belajar Huruf Braille untuk Pemula</h2>
+      <p class="text-lg opacity-90 mb-6 max-w-2xl mx-auto" id="main-desc">Pelajari sistem penulisan Braille secara interaktif. Cocok untuk mahasiswa PLB, guru, relawan, orang tua, dan siapa saja yang ingin memahami dunia tunanetra.</p><button onclick="showPage('materi')" class="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-xl text-lg font-bold shadow-lg transition-all transform hover:scale-105 focus:ring-4 focus:ring-yellow-400">🚀 Mulai Belajar</button>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6 mt-8">
+      <div class="card-bg bg-white rounded-2xl p-6 shadow-lg">
+       <div class="text-4xl mb-3">
+        📚
+       </div>
+       <h3 class="font-bold text-blue-900 text-lg">Materi Lengkap</h3>
+       <p class="text-gray-600 mt-2">Huruf A-Z, angka, dan tanda baca dalam Braille</p>
+      </div>
+      <div class="card-bg bg-white rounded-2xl p-6 shadow-lg">
+       <div class="text-4xl mb-3">
+        🎮
+       </div>
+       <h3 class="font-bold text-blue-900 text-lg">Simulator Interaktif</h3>
+       <p class="text-gray-600 mt-2">Latihan menulis Braille dengan 6 titik virtual</p>
+      </div>
+      <div class="card-bg bg-white rounded-2xl p-6 shadow-lg">
+       <div class="text-4xl mb-3">
+        🏆
+       </div>
+       <h3 class="font-bold text-blue-900 text-lg">Kuis &amp; Sertifikat</h3>
+       <p class="text-gray-600 mt-2">Uji pemahaman dan dapatkan sertifikat digital</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Materi Page -->
+   <section id="page-materi" class="page fade-in" aria-label="Materi Pembelajaran">
+    <div class="max-w-6xl mx-auto px-4 py-8">
+     <h2 class="text-2xl font-bold text-blue-900 mb-6">📚 Materi Pembelajaran</h2><!-- Sejarah -->
+     <div class="card-bg bg-white rounded-2xl p-6 shadow-lg mb-6">
+      <h3 class="text-xl font-bold text-blue-800 mb-3">Sejarah Braille</h3>
+      <p class="text-gray-700 leading-relaxed">Braille diciptakan oleh <strong>Louis Braille</strong> (1809-1852) dari Prancis. Saat usia 3 tahun, ia kehilangan penglihatan akibat kecelakaan. Pada usia 15 tahun, ia mengembangkan sistem penulisan 6 titik yang kini digunakan di seluruh dunia. Setiap sel Braille terdiri dari 6 titik yang disusun dalam 2 kolom dan 3 baris.</p><button onclick="speakText('Braille diciptakan oleh Louis Braille dari Prancis pada abad ke-19. Sistem ini menggunakan 6 titik yang disusun dalam 2 kolom dan 3 baris.')" class="mt-3 text-blue-600 hover:text-blue-800 font-medium focus:ring-2 focus:ring-orange-400 rounded px-2 py-1" aria-label="Dengarkan sejarah Braille">🔊 Dengarkan</button>
+     </div><!-- Sel Braille -->
+     <div class="card-bg bg-white rounded-2xl p-6 shadow-lg mb-6">
+      <h3 class="text-xl font-bold text-blue-800 mb-3">Pengenalan Sel Braille 6 Titik</h3>
+      <div class="flex items-center gap-8 flex-wrap">
+       <div class="grid grid-cols-2 gap-3 p-4 bg-blue-50 rounded-xl" aria-label="Diagram sel Braille dengan posisi titik 1 sampai 6">
+        <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
+         1
+        </div>
+        <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
+         4
+        </div>
+        <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
+         2
+        </div>
+        <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
+         5
+        </div>
+        <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
+         3
+        </div>
+        <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
+         6
+        </div>
+       </div>
+       <div class="text-gray-700">
+        <p><strong>Kolom kiri:</strong> Titik 1, 2, 3 (atas ke bawah)</p>
+        <p><strong>Kolom kanan:</strong> Titik 4, 5, 6 (atas ke bawah)</p>
+        <p class="mt-2">Kombinasi titik yang ditimbulkan membentuk huruf, angka, atau simbol.</p>
+       </div>
+      </div>
+     </div><!-- Huruf A-Z -->
+     <div class="card-bg bg-white rounded-2xl p-6 shadow-lg mb-6">
+      <h3 class="text-xl font-bold text-blue-800 mb-4">Huruf A - Z dalam Braille</h3>
+      <div id="alphabet-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3"></div>
+     </div><!-- Angka -->
+     <div class="card-bg bg-white rounded-2xl p-6 shadow-lg mb-6">
+      <h3 class="text-xl font-bold text-blue-800 mb-4">Angka dalam Braille</h3>
+      <p class="text-gray-600 mb-3">Angka menggunakan tanda angka (⠼) diikuti huruf a-j untuk mewakili 1-0.</p>
+      <div id="number-grid" class="grid grid-cols-3 sm:grid-cols-5 gap-3"></div>
+     </div><!-- Tanda Baca -->
+     <div class="card-bg bg-white rounded-2xl p-6 shadow-lg">
+      <h3 class="text-xl font-bold text-blue-800 mb-4">Tanda Baca dan Simbol dalam Braille</h3>
+      <div id="punctuation-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"></div>
+     </div>
+    </div>
+   </section><!-- Simulator Page -->
+   <section id="page-simulator" class="page fade-in" aria-label="Simulator Braille">
+    <div class="max-w-4xl mx-auto px-4 py-8">
+     <h2 class="text-2xl font-bold text-blue-900 mb-6">🎮 Simulator Braille</h2>
+     <div class="card-bg bg-white rounded-2xl p-8 shadow-lg text-center">
+      <p class="text-gray-600 mb-6">Tekan kombinasi titik untuk membentuk huruf Braille. Klik titik yang ingin diaktifkan.</p>
+      <div class="flex justify-center mb-6">
+       <div class="grid grid-cols-2 gap-4 p-6 bg-blue-50 rounded-2xl" role="group" aria-label="Simulator 6 titik Braille"><button class="braille-dot inactive sim-dot" data-dot="1" onclick="toggleSimDot(this)" aria-label="Titik 1" aria-pressed="false">1</button> <button class="braille-dot inactive sim-dot" data-dot="4" onclick="toggleSimDot(this)" aria-label="Titik 4" aria-pressed="false">4</button> <button class="braille-dot inactive sim-dot" data-dot="2" onclick="toggleSimDot(this)" aria-label="Titik 2" aria-pressed="false">2</button> <button class="braille-dot inactive sim-dot" data-dot="5" onclick="toggleSimDot(this)" aria-label="Titik 5" aria-pressed="false">5</button> <button class="braille-dot inactive sim-dot" data-dot="3" onclick="toggleSimDot(this)" aria-label="Titik 3" aria-pressed="false">3</button> <button class="braille-dot inactive sim-dot" data-dot="6" onclick="toggleSimDot(this)" aria-label="Titik 6" aria-pressed="false">6</button>
+       </div>
+      </div>
+      <div id="sim-result" class="text-4xl font-bold text-blue-900 mb-4" aria-live="polite">
+       -
+      </div>
+      <div id="sim-feedback" class="text-lg text-gray-600" aria-live="polite"></div><button onclick="resetSimulator()" class="mt-4 bg-gray-200 hover:bg-gray-300 px-6 py-2 rounded-lg font-medium focus:ring-2 focus:ring-orange-400">🔄 Reset</button>
+     </div>
+    </div>
+   </section><!-- Latihan Page -->
+   <section id="page-latihan" class="page fade-in" aria-label="Latihan">
+    <div class="max-w-4xl mx-auto px-4 py-8">
+     <h2 class="text-2xl font-bold text-blue-900 mb-6">✏️ Latihan</h2>
+     <div class="card-bg bg-white rounded-2xl p-8 shadow-lg">
+      <div class="flex gap-3 mb-6 flex-wrap"><button onclick="startExercise('easy')" class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg font-medium focus:ring-2 focus:ring-orange-400">Mudah</button> <button onclick="startExercise('medium')" class="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded-lg font-medium focus:ring-2 focus:ring-orange-400">Sedang</button> <button onclick="startExercise('hard')" class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg font-medium focus:ring-2 focus:ring-orange-400">Sulit</button>
+      </div>
+      <div id="exercise-area" aria-live="polite">
+       <p class="text-gray-500 text-center">Pilih tingkat kesulitan untuk memulai latihan.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Kuis Page -->
+   <section id="page-kuis" class="page fade-in" aria-label="Kuis">
+    <div class="max-w-4xl mx-auto px-4 py-8">
+     <h2 class="text-2xl font-bold text-blue-900 mb-6">🏆 Kuis</h2>
+     <div class="card-bg bg-white rounded-2xl p-8 shadow-lg">
+      <div id="quiz-area">
+       <p class="text-gray-600 mb-4 text-center">Uji pemahaman Anda tentang huruf Braille! 10 soal pilihan ganda.</p>
+       <div class="text-center"><button onclick="startQuiz()" class="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-xl font-bold text-lg focus:ring-4 focus:ring-yellow-400">Mulai Kuis</button>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Kamus Page -->
+   <section id="page-kamus" class="page fade-in" aria-label="Kamus Braille">
+    <div class="max-w-4xl mx-auto px-4 py-8">
+     <h2 class="text-2xl font-bold text-blue-900 mb-6">📖 Kamus Braille</h2>
+     <div class="card-bg bg-white rounded-2xl p-8 shadow-lg"><label for="kamus-input" class="block font-medium text-gray-700 mb-2">Ketik huruf atau kata:</label> <input id="kamus-input" type="text" class="w-full border-2 border-blue-200 rounded-xl px-4 py-3 text-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none" placeholder="Contoh: braille" oninput="searchKamus(this.value)" aria-describedby="kamus-desc">
+      <p id="kamus-desc" class="text-sm text-gray-500 mt-1">Ketik untuk melihat representasi Braille</p>
+      <div id="kamus-result" class="mt-6" aria-live="polite"></div>
+     </div>
+    </div>
+   </section><!-- Progress Page -->
+   <section id="page-progress" class="page fade-in" aria-label="Dashboard Kemajuan">
+    <div class="max-w-4xl mx-auto px-4 py-8">
+     <h2 class="text-2xl font-bold text-blue-900 mb-6">📊 Dashboard Kemajuan</h2>
+     <div class="grid md:grid-cols-2 gap-6">
+      <div class="card-bg bg-white rounded-2xl p-6 shadow-lg">
+       <h3 class="font-bold text-blue-800 mb-3">Kemajuan Belajar</h3>
+       <div class="w-full bg-gray-200 rounded-full h-4 mb-2">
+        <div id="progress-bar" class="bg-blue-600 h-4 rounded-full transition-all" style="width: 0%"></div>
+       </div>
+       <p id="progress-text" class="text-gray-600">0% selesai</p>
+      </div>
+      <div class="card-bg bg-white rounded-2xl p-6 shadow-lg">
+       <h3 class="font-bold text-blue-800 mb-3">Skor Kuis</h3>
+       <p id="quiz-score-display" class="text-3xl font-bold text-orange-500">-</p>
+      </div>
+      <div class="card-bg bg-white rounded-2xl p-6 shadow-lg">
+       <h3 class="font-bold text-blue-800 mb-3">Latihan Selesai</h3>
+       <p id="exercise-count" class="text-3xl font-bold text-green-600">0</p>
+      </div>
+      <div class="card-bg bg-white rounded-2xl p-6 shadow-lg">
+       <h3 class="font-bold text-blue-800 mb-3">🏅 Badge</h3>
+       <div id="badges" class="flex flex-wrap gap-2"></div>
+      </div>
+     </div>
+    </div>
+   </section>
+  </div>
+  <script>
+// Braille data
+const brailleMap = {
+  a:[1],b:[1,2],c:[1,4],d:[1,4,5],e:[1,5],f:[1,2,4],g:[1,2,4,5],h:[1,2,5],i:[2,4],j:[2,4,5],
+  k:[1,3],l:[1,2,3],m:[1,3,4],n:[1,3,4,5],o:[1,3,5],p:[1,2,3,4],q:[1,2,3,4,5],r:[1,2,3,5],s:[2,3,4],t:[2,3,4,5],
+  u:[1,3,6],v:[1,2,3,6],w:[2,4,5,6],x:[1,3,4,6],y:[1,3,4,5,6],z:[1,3,5,6]
+};
+const brailleUnicode = {a:'⠁',b:'⠃',c:'⠉',d:'⠙',e:'⠑',f:'⠋',g:'⠛',h:'⠓',i:'⠊',j:'⠚',k:'⠅',l:'⠇',m:'⠍',n:'⠝',o:'⠕',p:'⠏',q:'⠟',r:'⠗',s:'⠎',t:'⠞',u:'⠥',v:'⠧',w:'⠺',x:'⠭',y:'⠽',z:'⠵'};
+const numberMap = {1:'a',2:'b',3:'c',4:'d',5:'e',6:'f',7:'g',8:'h',9:'i',0:'j'};
+const punctuationMap = {
+  '.': {dots:[2,5,6], name:'Titik/Periode', desc:'Akhir kalimat', unicode:'⠮'},
+  ',': {dots:[2], name:'Koma', desc:'Pemisah dalam kalimat', unicode:'⠂'},
+  ';': {dots:[2,3], name:'Titik Koma', desc:'Pemisah yang lebih kuat', unicode:'⠆'},
+  ':': {dots:[2,5], name:'Tanda Titik Dua', desc:'Penjelasan atau daftar', unicode:'⠒'},
+  '!': {dots:[2,3,5], name:'Tanda Seru', desc:'Penekanan emosi', unicode:'⠖'},
+  '?': {dots:[1,4,5,6], name:'Tanda Tanya', desc:'Pertanyaan', unicode:'⠿'},
+  '"': {dots:[2,3,4,5,6], name:'Tanda Kutip Ganda', desc:'Ucapan langsung', unicode:'⠦'},
+  "'": {dots:[3], name:'Apostrof/Tanda Kutip Tunggal', desc:'Kepemilikan/kontraksi', unicode:'⠄'},
+  '-': {dots:[3,6], name:'Tanda Hubung/Minus', desc:'Menghubungkan kata atau pengurangan', unicode:'⠤'},
+  '(': {dots:[1,2,3,5,6], name:'Kurung Buka', desc:'Informasi tambahan dimulai', unicode:'⠣'},
+  ')': {dots:[2,3,4,5,6], name:'Kurung Tutup', desc:'Informasi tambahan berakhir', unicode:'⠜'},
+  '/': {dots:[3,4], name:'Garis Miring', desc:'Pembagi/pilihan', unicode:'⠌'},
+  '&': {dots:[1,2,3,4,6], name:'Ampersand', desc:'Simbol dan/sambung', unicode:'⠯'},
+  '@': {dots:[1], name:'At', desc:'Simbol email', unicode:'⠁'},
+  '#': {dots:[3,4,5,6], name:'Pagar/Hash', desc:'Simbol nomor', unicode:'⠼'},
+  '%': {dots:[1,2,3,4,5,6], name:'Persen', desc:'Persentase', unicode:'⠿'},
+  '*': {dots:[1,6], name:'Bintang/Asterisk', desc:'Catatan/penanda', unicode:'⠈'},
+  '…': {dots:[2,5,6,2,5,6,2,5,6], name:'Elipsis', desc:'Penghilangan atau tanda lanjutan', unicode:'⠮⠮⠮'},
+  '=': {dots:[1,2,3,4,5,6], name:'Tanda Sama Dengan', desc:'Kesamaan/hasil', unicode:'⠿'},
+  '+': {dots:[3,4,6], name:'Tanda Plus', desc:'Penjumlahan', unicode:'⠬'},
+  '×': {dots:[1,6], name:'Tanda Kali', desc:'Perkalian', unicode:'⠈'},
+  '÷': {dots:[2,5], name:'Tanda Bagi', desc:'Pembagian', unicode:'⠒'},
+  '[': {dots:[1,2,3,4,5], name:'Kurung Siku Buka', desc:'Pengelompokan', unicode:'⠷'},
+  ']': {dots:[2,3,4,5,6], name:'Kurung Siku Tutup', desc:'Pengelompokan berakhir', unicode:'⠾'},
+  '{': {dots:[1,2,3,5,6], name:'Kurung Kurawal Buka', desc:'Blok kode', unicode:'⠫'},
+  '}': {dots:[2,3,4,5,6], name:'Kurung Kurawal Tutup', desc:'Blok kode berakhir', unicode:'⠻'},
+  '~': {dots:[1,2,4], name:'Tanda Gelombang', desc:'Pendekatan/kira-kira', unicode:'⠘'},
+  '^': {dots:[1,2,4,5], name:'Tanda Sirkumflek/Pangkat', desc:'Perpangkatan', unicode:'⠘'},
+  '`': {dots:[4], name:'Backtick', desc:'Kutip balik', unicode:'⠐'},
+  '_': {dots:[4,5,6], name:'Garis Bawah', desc:'Pemisah/penanda', unicode:'⠸'},
+  '|': {dots:[1,2,3,4,5,6], name:'Garis Vertikal', desc:'Pemisah', unicode:'⠿'},
+  '\\': {dots:[1,2,4,5,6], name:'Garis Miring Balik', desc:'Pemisah/escape', unicode:'⠘'},
+  '¡': {dots:[3,5], name:'Tanda Seru Terbalik', desc:'Penekanan awal', unicode:'⠖'},
+  '¿': {dots:[3,4], name:'Tanda Tanya Terbalik', desc:'Pertanyaan awal', unicode:'⠸'}
+};
+
+let progress = { materiViewed: false, exercisesDone: 0, quizScore: null };
+
+// Render alphabet grid
+function renderAlphabet() {
+  const grid = document.getElementById('alphabet-grid');
+  grid.innerHTML = '';
+  Object.keys(brailleMap).forEach(letter => {
+    const div = document.createElement('div');
+    div.className = 'bg-blue-50 rounded-xl p-3 text-center cursor-pointer hover:bg-blue-100 transition-all focus-within:ring-2 focus-within:ring-orange-400';
+    div.setAttribute('role', 'button');
+    div.setAttribute('tabindex', '0');
+    div.setAttribute('aria-label', `Huruf ${letter.toUpperCase()}, titik ${brailleMap[letter].join(',')}`);
+    div.onclick = () => { speakText(`Huruf ${letter.toUpperCase()}`); };
+    div.onkeydown = (e) => { if(e.key==='Enter') div.onclick(); };
+    div.innerHTML = `
+      <div class="text-2xl font-bold text-blue-900">${letter.toUpperCase()}</div>
+      <div class="text-3xl my-1">${brailleUnicode[letter]}</div>
+      <div class="text-xs text-gray-500">Titik: ${brailleMap[letter].join(', ')}</div>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+function renderNumbers() {
+  const grid = document.getElementById('number-grid');
+  grid.innerHTML = '';
+  for(let i=1; i<=9; i++) {
+    const l = numberMap[i];
+    const div = document.createElement('div');
+    div.className = 'bg-orange-50 rounded-xl p-3 text-center';
+    div.innerHTML = `<div class="text-xl font-bold text-orange-700">${i}</div><div class="text-2xl">⠼${brailleUnicode[l]}</div>`;
+    grid.appendChild(div);
+  }
+  const div0 = document.createElement('div');
+  div0.className = 'bg-orange-50 rounded-xl p-3 text-center';
+  div0.innerHTML = `<div class="text-xl font-bold text-orange-700">0</div><div class="text-2xl">⠼${brailleUnicode['j']}</div>`;
+  grid.appendChild(div0);
+}
+
+function renderPunctuation() {
+  const grid = document.getElementById('punctuation-grid');
+  grid.innerHTML = '';
+  Object.entries(punctuationMap).forEach(([symbol, data]) => {
+    const div = document.createElement('div');
+    div.className = 'bg-purple-50 rounded-xl p-4 text-center cursor-pointer hover:bg-purple-100 transition-all focus-within:ring-2 focus-within:ring-orange-400';
+    div.setAttribute('role', 'button');
+    div.setAttribute('tabindex', '0');
+    div.setAttribute('aria-label', `${data.name}, titik ${data.dots.join(',')}, ${data.desc}`);
+    div.onclick = () => { speakText(`${data.name}, titik ${data.dots.join(' dan ')}, ${data.desc}`); };
+    div.onkeydown = (e) => { if(e.key==='Enter') div.onclick(); };
+    
+    // Create braille dot visualization with labels
+    let dotsHtml = '';
+    // Get unique dots for display (in case of repetition like elipsis)
+    const uniqueDots = [...new Set(data.dots)];
+    for(let pos = 1; pos <= 6; pos++) {
+      const isActive = uniqueDots.includes(pos);
+      const dotClass = isActive ? 'bg-purple-600 border-purple-600 shadow-lg' : 'bg-gray-200 border-gray-300';
+      const textColor = isActive ? 'text-white font-bold' : 'text-gray-600 text-xs';
+      dotsHtml += `<div class="flex flex-col items-center"><div class="w-5 h-5 rounded-full border-2 ${dotClass} flex items-center justify-center ${textColor} text-xs">${isActive ? '●' : ''}</div><div class="text-xs text-gray-600 mt-1">${pos}</div></div>`;
+    }
+    
+    // Create dot position explanation
+    const dotExplanation = uniqueDots.sort((a,b) => a-b).map(d => {
+      if(d <= 3) return `Titik ${d} (kolom kiri)`;
+      else return `Titik ${d} (kolom kanan)`;
+    }).join(' + ');
+    
+    div.innerHTML = `
+      <div class="text-2xl font-bold text-purple-900 mb-2">${symbol}</div>
+      <div class="text-3xl font-semibold text-purple-600 mb-2">${data.unicode}</div>
+      <div class="text-sm font-semibold text-purple-800">${data.name}</div>
+      <div class="text-xs text-gray-600 mt-1">${data.desc}</div>
+      <div class="grid grid-cols-3 gap-3 mt-4 p-3 bg-white rounded-lg" aria-label="Pola titik Braille dengan nomor posisi">
+        ${dotsHtml}
+      </div>
+      <div class="mt-3 p-2 bg-purple-100 rounded text-xs text-purple-800">
+        <strong>Titik aktif:</strong> ${uniqueDots.join(', ')}
+      </div>
+      <div class="mt-2 text-xs text-gray-700 italic">
+        ${dotExplanation}
+      </div>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+// Navigation
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => { b.classList.remove('active'); b.classList.add('text-gray-600'); });
+  const idx = ['home','materi','simulator','latihan','kuis','kamus','progress'].indexOf(id);
+  const btns = document.querySelectorAll('.nav-btn');
+  if(btns[idx]) { btns[idx].classList.add('active'); btns[idx].classList.remove('text-gray-600'); }
+  if(id === 'materi') { progress.materiViewed = true; updateProgress(); }
+}
+
+// Simulator
+function toggleSimDot(btn) {
+  btn.classList.toggle('active');
+  btn.classList.toggle('inactive');
+  btn.setAttribute('aria-pressed', btn.classList.contains('active'));
+  updateSimResult();
+}
+
+function updateSimResult() {
+  const dots = [];
+  document.querySelectorAll('.sim-dot').forEach(d => { if(d.classList.contains('active')) dots.push(parseInt(d.dataset.dot)); });
+  dots.sort();
+  let found = '-';
+  Object.entries(brailleMap).forEach(([letter, pattern]) => {
+    if(JSON.stringify(pattern) === JSON.stringify(dots)) found = letter.toUpperCase();
+  });
+  document.getElementById('sim-result').textContent = found === '-' ? (dots.length ? '❓' : '-') : `${found} ${brailleUnicode[found.toLowerCase()] || ''}`;
+  document.getElementById('sim-feedback').textContent = found !== '-' ? `✅ Benar! Itu huruf ${found}` : (dots.length ? 'Terus coba...' : 'Tekan titik untuk mulai');
+  if(found !== '-') speakText(`Huruf ${found}`);
+}
+
+function resetSimulator() {
+  document.querySelectorAll('.sim-dot').forEach(d => { d.classList.remove('active'); d.classList.add('inactive'); d.setAttribute('aria-pressed','false'); });
+  document.getElementById('sim-result').textContent = '-';
+  document.getElementById('sim-feedback').textContent = '';
+}
+
+// Exercise
+function startExercise(level) {
+  const letters = Object.keys(brailleMap);
+  let count = level === 'easy' ? 3 : level === 'medium' ? 5 : 8;
+  let questions = [];
+  for(let i=0; i<count; i++) { questions.push(letters[Math.floor(Math.random()*letters.length)]); }
+  let current = 0; let score = 0;
+  function renderQ() {
+    if(current >= questions.length) {
+      progress.exercisesDone++;
+      updateProgress();
+      document.getElementById('exercise-area').innerHTML = `<div class="text-center"><p class="text-2xl font-bold text-green-600 mb-4">🎉 Selesai! Skor: ${score}/${questions.length}</p><button onclick="startExercise('${level}')" class="bg-blue-600 text-white px-6 py-2 rounded-lg">Ulangi</button></div>`;
+      return;
+    }
+    const q = questions[current];
+    const opts = [q];
+    while(opts.length < 4) { const r = letters[Math.floor(Math.random()*letters.length)]; if(!opts.includes(r)) opts.push(r); }
+    opts.sort(() => Math.random()-0.5);
+    document.getElementById('exercise-area').innerHTML = `
+      <div class="text-center">
+        <p class="text-gray-600 mb-2">Soal ${current+1}/${questions.length}</p>
+        <p class="text-lg font-medium mb-4">Huruf apa yang diwakili oleh pola Braille ini?</p>
+        <div class="text-5xl mb-6">${brailleUnicode[q]}</div>
+        <div class="grid grid-cols-2 gap-3 max-w-sm mx-auto">
+          ${opts.map(o => `<button onclick="checkExercise('${o}','${q}')" class="bg-blue-100 hover:bg-blue-200 text-blue-900 font-bold py-3 rounded-xl text-xl focus:ring-2 focus:ring-orange-400">${o.toUpperCase()}</button>`).join('')}
+        </div>
+      </div>`;
+  }
+  window.checkExercise = (ans, correct) => {
+    if(ans === correct) score++;
+    current++;
+    renderQ();
+  };
+  renderQ();
+}
+
+// Quiz
+let quizQuestions = [];
+let quizCurrent = 0;
+let quizScore = 0;
+
+function startQuiz() {
+  const letters = Object.keys(brailleMap);
+  quizQuestions = []; quizCurrent = 0; quizScore = 0;
+  const used = new Set();
+  while(quizQuestions.length < 10) {
+    const l = letters[Math.floor(Math.random()*letters.length)];
+    if(!used.has(l)) { used.add(l); quizQuestions.push(l); }
+  }
+  renderQuizQ();
+}
+
+function renderQuizQ() {
+  if(quizCurrent >= 10) {
+    progress.quizScore = quizScore;
+    updateProgress();
+    const pct = quizScore * 10;
+    document.getElementById('quiz-area').innerHTML = `
+      <div class="text-center">
+        <p class="text-3xl font-bold ${quizScore >= 7 ? 'text-green-600' : 'text-orange-500'} mb-4">Skor: ${quizScore}/10</p>
+        ${quizScore >= 7 ? `<div class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-2xl p-6 mb-4 inline-block"><p class="text-xl font-bold">🎓 Sertifikat</p><p>Selamat! Anda telah lulus kuis Braille</p><p class="text-sm mt-2">Skor: ${pct}%</p></div>` : '<p class="text-gray-600">Coba lagi untuk mendapat sertifikat (min. 70%)</p>'}
+        <br><button onclick="startQuiz()" class="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg">Ulangi Kuis</button>
+      </div>`;
+    return;
+  }
+  const q = quizQuestions[quizCurrent];
+  const letters = Object.keys(brailleMap);
+  const opts = [q];
+  while(opts.length < 4) { const r = letters[Math.floor(Math.random()*letters.length)]; if(!opts.includes(r)) opts.push(r); }
+  opts.sort(() => Math.random()-0.5);
+  document.getElementById('quiz-area').innerHTML = `
+    <div class="text-center">
+      <p class="text-gray-600 mb-2">Soal ${quizCurrent+1}/10</p>
+      <p class="text-lg font-medium mb-4">Pola Braille berikut mewakili huruf apa?</p>
+      <div class="text-5xl mb-6">${brailleUnicode[q]}</div>
+      <div class="grid grid-cols-2 gap-3 max-w-sm mx-auto">
+        ${opts.map(o => `<button onclick="answerQuiz('${o}')" class="bg-blue-100 hover:bg-blue-200 text-blue-900 font-bold py-3 rounded-xl text-xl focus:ring-2 focus:ring-orange-400">${o.toUpperCase()}</button>`).join('')}
+      </div>
+    </div>`;
+}
+
+function answerQuiz(ans) {
+  if(ans === quizQuestions[quizCurrent]) quizScore++;
+  quizCurrent++;
+  renderQuizQ();
+}
+
+// Kamus
+function searchKamus(val) {
+  const res = document.getElementById('kamus-result');
+  if(!val.trim()) { res.innerHTML = ''; return; }
+  let html = '<div class="flex flex-wrap gap-3">';
+  val.toLowerCase().split('').forEach(ch => {
+    if(brailleUnicode[ch]) {
+      html += `<div class="bg-blue-50 rounded-xl p-4 text-center min-w-[60px]"><div class="text-xl font-bold text-blue-900">${ch.toUpperCase()}</div><div class="text-3xl">${brailleUnicode[ch]}</div><div class="text-xs text-gray-500">Titik: ${brailleMap[ch].join(',')}</div></div>`;
+    } else if(ch === ' ') {
+      html += `<div class="bg-gray-100 rounded-xl p-4 text-center min-w-[40px]"><div class="text-gray-400">spasi</div></div>`;
+    }
+  });
+  html += '</div>';
+  res.innerHTML = html;
+}
+
+// Progress
+function updateProgress() {
+  let pct = 0;
+  if(progress.materiViewed) pct += 30;
+  pct += Math.min(progress.exercisesDone * 10, 30);
+  if(progress.quizScore !== null) pct += 40 * (progress.quizScore / 10);
+  pct = Math.round(Math.min(pct, 100));
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = pct + '% selesai';
+  document.getElementById('exercise-count').textContent = progress.exercisesDone;
+  document.getElementById('quiz-score-display').textContent = progress.quizScore !== null ? progress.quizScore + '/10' : '-';
+  const badges = document.getElementById('badges');
+  let b = '';
+  if(progress.materiViewed) b += '<span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">📚 Pembaca</span>';
+  if(progress.exercisesDone >= 1) b += '<span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">✏️ Praktisi</span>';
+  if(progress.quizScore >= 7) b += '<span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium">🏆 Juara</span>';
+  badges.innerHTML = b || '<span class="text-gray-400">Belum ada badge</span>';
+}
+
+// Audio
+function speakText(text) {
+  if('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'id-ID';
+    u.rate = 0.9;
+    window.speechSynthesis.speak(u);
+  }
+}
+
+// Accessibility toggles
+function toggleContrast() { document.documentElement.classList.toggle('high-contrast'); }
+function toggleLargeText() { document.documentElement.classList.toggle('large-text'); }
+
+// Init
+renderAlphabet();
+renderNumbers();
+renderPunctuation();
+updateProgress();
+lucide.createIcons();
+
+// Element SDK
+const defaultConfig = {
+  app_title: 'Belajar Huruf Braille untuk Pemula',
+  app_description: 'Pelajari sistem penulisan Braille secara interaktif. Cocok untuk mahasiswa PLB, guru, relawan, orang tua, dan siapa saja yang ingin memahami dunia tunanetra.',
+  background_color: '#f8fafc',
+  surface_color: '#ffffff',
+  text_color: '#1e3a5f',
+  primary_action_color: '#f97316',
+  secondary_action_color: '#1e40af',
+  font_family: 'Plus Jakarta Sans',
+  font_size: 16
+};
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => {
+    document.getElementById('main-title').textContent = config.app_title || defaultConfig.app_title;
+    document.getElementById('main-desc').textContent = config.app_description || defaultConfig.app_description;
+    const bg = config.background_color || defaultConfig.background_color;
+    const surface = config.surface_color || defaultConfig.surface_color;
+    const text = config.text_color || defaultConfig.text_color;
+    const primary = config.primary_action_color || defaultConfig.primary_action_color;
+    const secondary = config.secondary_action_color || defaultConfig.secondary_action_color;
+    const font = config.font_family || defaultConfig.font_family;
+    const size = config.font_size || defaultConfig.font_size;
+    document.getElementById('app').style.backgroundColor = bg;
+    document.querySelectorAll('.card-bg').forEach(el => { el.style.backgroundColor = surface; });
+    document.querySelectorAll('h2, h3').forEach(el => el.style.color = text);
+    document.querySelectorAll('body, #app').forEach(el => { el.style.fontFamily = `${font}, sans-serif`; el.style.fontSize = size + 'px'; });
+  },
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({background_color:v}); }},
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({surface_color:v}); }},
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({text_color:v}); }},
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({primary_action_color:v}); }},
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({secondary_action_color:v}); }}
+    ],
+    borderables: [],
+    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({font_family:v}); }},
+    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({font_size:v}); }}
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['app_title', config.app_title || defaultConfig.app_title],
+    ['app_description', config.app_description || defaultConfig.app_description]
+  ])
+});
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a0b73cbfb0a44f19',t:'MTc4MTQxODExMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
