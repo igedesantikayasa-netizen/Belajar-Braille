@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="default" data-font-size="normal">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Platform belajar huruf Braille interaktif untuk pemula sesuai standar aksesibilitas WCAG 2.1 AA/AAA. Pelajari sejarah, teori 6 titik, simulator interaktif, dan kuis permainan.">
+  <title>Belajar Huruf Braille Interaktif — Aksesibel untuk Semua (Standar WCAG)</title>
+  
+  <!-- Stylesheet Utama -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Skip Link untuk Pengguna Keyboard & Pembaca Layar -->
+  <a href="#main-content" class="skip-link">Lewati langsung ke konten utama</a>
+
+  <!-- ARIA Live Regions untuk Pengumuman Dinamis Pembaca Layar -->
+  <div id="sr-announcer-polite" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+  <div id="sr-announcer-assertive" class="sr-only" aria-live="assertive" aria-atomic="true"></div>
+
+  <!-- TOOLBAR AKSESIBILITAS ATAS (WCAG 2.1) -->
+  <aside class="a11y-toolbar" aria-label="Pengaturan Aksesibilitas Halaman">
+    <div class="container a11y-toolbar-inner">
+      <div class="a11y-title">
+        <span class="a11y-icon" aria-hidden="true">♿</span>
+        <span>Aksesibilitas</span>
+      </div>
+
+      <div class="a11y-controls-group">
+        <!-- Pengatur Kontras / Tema -->
+        <div class="a11y-control-item">
+          <label for="select-theme">Tema:</label>
+          <select id="select-theme" class="a11y-select" aria-label="Pilih tema tampilan dan kontras warna">
+            <option value="default">Terang Standar</option>
+            <option value="dark">Gelap (Dark Mode)</option>
+            <option value="high-contrast">Kontras Tinggi (Kuning-Hitam)</option>
+          </select>
+        </div>
+
+        <!-- Pengatur Ukuran Teks -->
+        <div class="a11y-control-item">
+          <label for="select-fontsize">Ukuran Teks:</label>
+          <select id="select-fontsize" class="a11y-select" aria-label="Pilih ukuran teks">
+            <option value="normal">Normal (100%)</option>
+            <option value="large">Besar (115%)</option>
+            <option value="xlarge">Ekstra Besar (130%)</option>
+          </select>
+        </div>
+
+        <!-- Toggle Suara Pembaca (TTS) -->
+        <div class="a11y-control-item">
+          <button type="button" class="btn btn-secondary btn-sm" id="toggle-speech-btn" aria-pressed="true">
+            <span class="icon" aria-hidden="true">🔊</span> <span>Suara: ON</span>
+          </button>
+        </div>
+
+        <!-- Bantuan Pintasan Tombol Keyboard -->
+        <div class="a11y-control-item">
+          <button type="button" class="btn btn-outline btn-sm" id="btn-keyboard-help">
+            <span aria-hidden="true">⌨️</span> Pintasan Keyboard
+          </button>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- HEADER & NAVIGASI SITUS -->
+  <header class="site-header" role="banner">
+    <div class="container site-header-inner">
+      <div class="brand-wrapper">
+        <div class="brand-braille-icon" aria-hidden="true">⠃</div>
+        <div class="brand-text">
+          <h1 class="site-title">Belajar Braille Interaktif</h1>
+          <p class="site-tagline">Mengenal Sistem Tulisan Tunanetra dengan Mudah &amp; Menyenangkan</p>
+        </div>
+      </div>
+
+      <nav class="main-nav" role="navigation" aria-label="Navigasi Materi Braille">
+        <ul>
+          <li><a href="#sejarah" class="nav-link">Sejarah</a></li>
+          <li><a href="#teori" class="nav-link">Teori 6 Titik</a></li>
+          <li><a href="#alfabet" class="nav-link">Daftar Huruf A-Z</a></li>
+          <li><a href="#simulator" class="nav-link">Simulator Titik</a></li>
+          <li><a href="#kuis" class="nav-link">Kuis Permainan</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- KONTEN UTAMA -->
+  <main id="main-content" role="main">
+
+    <!-- HERO SECTION -->
+    <section class="section section-hero" aria-labelledby="hero-title">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-text-col">
+            <span class="hero-badge">
+              <span class="badge-dot" aria-hidden="true"></span>
+              Standar Aksesibilitas WCAG 2.1 AA/AAA
+            </span>
+            <h2 id="hero-title" class="hero-title">Membuka Jendela Dunia Lewat Ujung Jari</h2>
+            <p class="hero-desc">
+              Sistem Braille adalah bukti kejeniusan manusia dalam mengubah sentuhan menjadi literasi dan pengetahuan. 
+              Situs ini dirancang untuk mahasiswa PLB, guru, relawan, orang tua, dan siapa pun yang ingin mempelajari alfabet Braille secara mandiri, rapi, dan terstruktur.
+            </p>
+            <div class="hero-actions">
+              <a href="#teori" class="btn btn-primary btn-large">Pelajari Teori Dasar</a>
+              <a href="#simulator" class="btn btn-secondary btn-large">Coba Simulator 6 Titik</a>
+              <a href="#kuis" class="btn btn-outline btn-large">Mulai Main Kuis</a>
+            </div>
+          </div>
+
+          <div class="hero-visual-card" aria-label="Ilustrasi Sel Braille dengan 6 Titik">
+            <div class="hero-card-badge">SEL BRAILLE STANDAR</div>
+            <h3 class="hero-card-title">Anatomi 6 Titik Timbul</h3>
+            <p class="hero-card-subtitle">2 kolom &times; 3 baris yang pas di satu ujung jari telunjuk.</p>
+            <div class="hero-cell-demo" aria-hidden="true">
+              <div class="braille-static-cell hero-cell-large">
+                <div class="cell-col">
+                  <span class="cell-dot filled"></span>
+                  <span class="cell-dot filled"></span>
+                  <span class="cell-dot filled"></span>
+                </div>
+                <div class="cell-col">
+                  <span class="cell-dot filled"></span>
+                  <span class="cell-dot filled"></span>
+                  <span class="cell-dot filled"></span>
+                </div>
+              </div>
+            </div>
+            <div class="hero-stats-row">
+              <div class="hero-stat-pill">
+                <span class="pill-num">6</span>
+                <span class="pill-txt">Posisi Titik</span>
+              </div>
+              <div class="hero-stat-pill">
+                <span class="pill-num">64</span>
+                <span class="pill-txt">Kombinasi Pola</span>
+              </div>
+              <div class="hero-stat-pill">
+                <span class="pill-num">1</span>
+                <span class="pill-txt">Sentuhan Jari</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAGIAN 1: SEJARAH BRAILLE -->
+    <section id="sejarah" class="section" aria-labelledby="heading-sejarah">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Asal-Usul &amp; Perkembangan</span>
+          <h2 id="heading-sejarah" class="section-title">Sejarah Penemuan Huruf Braille</h2>
+          <p class="section-lead">
+            Kisah inspiratif seorang remaja berusia 15 tahun yang membebaskan jutaan disabilitas netra di seluruh dunia dari ketertinggalan literasi.
+          </p>
+        </div>
+
+        <div class="timeline-grid">
+          <!-- Kronologi 1 -->
+          <article class="timeline-card">
+            <div class="timeline-card-top">
+              <span class="timeline-step">Fase 01</span>
+              <span class="timeline-year">1809</span>
+            </div>
+            <h3 class="timeline-title">Kelahiran Louis Braille</h3>
+            <p class="timeline-desc">
+              Lahir di Coupvray, Prancis. Pada usia 3 tahun, ia mengalami kecelakaan jarum di bengkel pelana ayahnya hingga kehilangan penglihatan di kedua matanya.
+            </p>
+          </article>
+
+          <!-- Kronologi 2 -->
+          <article class="timeline-card">
+            <div class="timeline-card-top">
+              <span class="timeline-step">Fase 02</span>
+              <span class="timeline-year">1821</span>
+            </div>
+            <h3 class="timeline-title">Kode Militer Barbier</h3>
+            <p class="timeline-desc">
+              Kapten militer Charles Barbier memperkenalkan <em>"Ecriture Nocturne"</em> (tulisan malam), kode 12 titik timbul militer. Namun kode ini terlalu besar dan rumit bagi jari manusia.
+            </p>
+          </article>
+
+          <!-- Kronologi 3 -->
+          <article class="timeline-card">
+            <div class="timeline-card-top">
+              <span class="timeline-step">Fase 03</span>
+              <span class="timeline-year">1824</span>
+            </div>
+            <h3 class="timeline-title">Revolusi Sel 6 Titik</h3>
+            <p class="timeline-desc">
+              Pada usia 15 tahun di Institut Paris, Louis Braille menyederhanakannya menjadi matriks 6 titik kompak. Ujung jari dapat meraba seluruh titik tanpa perlu menggeser posisi tangan!
+            </p>
+          </article>
+
+          <!-- Kronologi 4 -->
+          <article class="timeline-card">
+            <div class="timeline-card-top">
+              <span class="timeline-step">Fase 04</span>
+              <span class="timeline-year">Kini</span>
+            </div>
+            <h3 class="timeline-title">Hari Braille &amp; Digital</h3>
+            <p class="timeline-desc">
+              Setiap tanggal <strong>4 Januari</strong> diperingati sebagai Hari Braille Sedunia. Sistem Braille terus berkembang di era digital melalui <em>Refreshable Braille Display</em>.
+            </p>
+          </article>
+        </div>
+
+        <div class="history-quote-box">
+          <div class="quote-symbol" aria-hidden="true">“</div>
+          <div class="quote-content">
+            <blockquote>
+              "Akses terhadap komunikasi dalam pengertian yang seluas-luasnya adalah akses terhadap pengetahuan. Itu adalah hal yang sangat vital jika kita tunanetra tidak ingin dipandang remeh atau dikasihani."
+            </blockquote>
+            <cite>— Louis Braille (1809 – 1852), Penemu Sistem Braille</cite>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAGIAN 2: TEORI & ANATOMI SISTEM 6 TITIK -->
+    <section id="teori" class="section" aria-labelledby="heading-teori">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Konsep Dasar</span>
+          <h2 id="heading-teori" class="section-title">Teori &amp; Struktur Logis Huruf Braille</h2>
+          <p class="section-lead">
+            Braille bukan bahasa tersendiri, melainkan kode alfabetis berbasis pola logika yang sangat teratur, simetris, dan mudah diingat.
+          </p>
+        </div>
+
+        <div class="theory-layout">
+          <!-- Diagram Visual Titik 1-6 -->
+          <div class="theory-diagram-card">
+            <div class="theory-card-badge">ANATOMI TITIK</div>
+            <h3 class="theory-diagram-title">Penomoran Baku Titik Braille</h3>
+            <p class="theory-diagram-sub">Satu sel Braille terdiri dari 2 kolom dan 3 baris titik:</p>
+
+            <div class="theory-cell-visual" aria-label="Diagram penomoran titik braille. Kolom kiri titik 1, 2, 3. Kolom kanan titik 4, 5, 6.">
+              <!-- Kolom Kiri -->
+              <div class="theory-dot-col">
+                <div class="theory-dot-item">
+                  <div class="theory-dot-circle">1</div>
+                  <div class="theory-dot-desc">
+                    <strong>Titik 1</strong>
+                    <span>Kiri Atas</span>
+                  </div>
+                </div>
+                <div class="theory-dot-item">
+                  <div class="theory-dot-circle">2</div>
+                  <div class="theory-dot-desc">
+                    <strong>Titik 2</strong>
+                    <span>Kiri Tengah</span>
+                  </div>
+                </div>
+                <div class="theory-dot-item">
+                  <div class="theory-dot-circle">3</div>
+                  <div class="theory-dot-desc">
+                    <strong>Titik 3</strong>
+                    <span>Kiri Bawah</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="theory-divider" aria-hidden="true"></div>
+
+              <!-- Kolom Kanan -->
+              <div class="theory-dot-col">
+                <div class="theory-dot-item">
+                  <div class="theory-dot-circle">4</div>
+                  <div class="theory-dot-desc">
+                    <strong>Titik 4</strong>
+                    <span>Kanan Atas</span>
+                  </div>
+                </div>
+                <div class="theory-dot-item">
+                  <div class="theory-dot-circle">5</div>
+                  <div class="theory-dot-desc">
+                    <strong>Titik 5</strong>
+                    <span>Kanan Tengah</span>
+                  </div>
+                </div>
+                <div class="theory-dot-item">
+                  <div class="theory-dot-circle">6</div>
+                  <div class="theory-dot-desc">
+                    <strong>Titik 6</strong>
+                    <span>Kanan Bawah</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="theory-math-note">
+              <strong>Rumus Kombinasi:</strong> 6 titik dengan status timbul / datar menghasilkan total <code>2<sup>6</sup> = 64</code> kombinasi karakter.
+            </div>
+          </div>
+
+          <!-- Logika 3 Generasi Alfabet -->
+          <div class="theory-steps-list">
+            <article class="theory-step-card step-card-1">
+              <div class="theory-step-header">
+                <span class="theory-step-badge badge-blue">Pondasi 1</span>
+                <h3 class="theory-step-title">Huruf A sampai J (Pola Dasar)</h3>
+              </div>
+              <p>
+                Hanya menggunakan 4 titik di baris atas dan baris tengah (Titik <strong>1, 2, 4, dan 5</strong>). Titik 3 dan titik 6 sama sekali belum digunakan.
+              </p>
+              <div class="theory-formula-chip">
+                <span>Pola Dasar:</span> <code>A — J</code> menggunakan baris atas &amp; tengah
+              </div>
+            </article>
+
+            <article class="theory-step-card step-card-2">
+              <div class="theory-step-header">
+                <span class="theory-step-badge badge-indigo">Pola 2</span>
+                <h3 class="theory-step-title">Huruf K sampai T (+ Titik 3)</h3>
+              </div>
+              <p>
+                Ambil pola huruf A sampai J, lalu cukup <strong>tambahkan Titik 3</strong> di kiri bawah. Contoh: Huruf A (titik 1) + titik 3 = Huruf K (titik 1, 3).
+              </p>
+              <div class="theory-formula-chip">
+                <code>[A — J]</code> + <strong>Titik 3</strong> = <code>[K — T]</code>
+              </div>
+            </article>
+
+            <article class="theory-step-card step-card-3">
+              <div class="theory-step-header">
+                <span class="theory-step-badge badge-amber">Pola 3</span>
+                <h3 class="theory-step-title">Huruf U sampai Z (+ Titik 6 &amp; W)</h3>
+              </div>
+              <p>
+                Ambil pola huruf K sampai T, lalu <strong>tambahkan Titik 6</strong> di kanan bawah. 
+                <br><em>Catatan Khusus:</em> Huruf <strong>W</strong> dirancang terpisah (titik 2, 4, 5, 6) karena dalam bahasa Prancis abad ke-19 belum memakai huruf W.
+              </p>
+              <div class="theory-formula-chip">
+                <code>[K — T]</code> + <strong>Titik 6</strong> = <code>[U — Z]</code> (Kecuali W)
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAGIAN 3: TABEL & EKSPLORASI HURUF A-Z -->
+    <section id="alfabet" class="section" aria-labelledby="heading-alfabet">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Katalog Interaktif</span>
+          <h2 id="heading-alfabet" class="section-title">Eksplorasi Alfabet Braille (A - Z)</h2>
+          <p class="section-lead">
+            Pilih dan dengarkan pembacaan tiap huruf, pelajari jembatan keledai (mnemonik), serta kirim langsung polanya ke simulator interaktif.
+          </p>
+        </div>
+
+        <!-- Filter & Search Toolbar -->
+        <div class="alphabet-toolbar">
+          <div class="search-box-wrapper">
+            <span class="search-icon" aria-hidden="true">🔍</span>
+            <label for="alphabet-search" class="sr-only">Cari huruf atau nomor titik</label>
+            <input type="search" id="alphabet-search" class="search-input" placeholder="Cari huruf (misal: 'B' atau 'titik 1')..." aria-label="Ketik huruf atau kata kunci untuk mencari di daftar Braille">
+          </div>
+
+          <div class="filter-buttons-group" role="group" aria-label="Filter Kelompok Huruf">
+            <button type="button" class="filter-btn active" data-group="all" aria-pressed="true">Semua (A-Z)</button>
+            <button type="button" class="filter-btn" data-group="1" aria-pressed="false">Kelompok 1 (A-J)</button>
+            <button type="button" class="filter-btn" data-group="2" aria-pressed="false">Kelompok 2 (K-T)</button>
+            <button type="button" class="filter-btn" data-group="3" aria-pressed="false">Kelompok 3 (U-Z)</button>
+          </div>
+        </div>
+
+        <!-- Grid Kartu Alfabet (Dirender oleh main.js) -->
+        <div id="alphabet-grid" class="alphabet-grid" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- BAGIAN 4: SIMULATOR INTERAKTIF SEL BRAILLE -->
+    <section id="simulator" class="section" aria-labelledby="heading-simulator">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Uji Coba Langsung</span>
+          <h2 id="heading-simulator" class="section-title">Simulator Sel Braille Interaktif</h2>
+          <p class="section-lead">
+            Sentuh atau klik tombol titik 1 sampai 6 (atau gunakan tombol angka <strong>1 - 6</strong> pada keyboard). Sistem akan otomatis mendeteksi huruf apa yang Anda bentuk disertai umpan balik suara!
+          </p>
+        </div>
+
+        <div class="simulator-card">
+          <div class="simulator-layout">
+            <!-- Sel Titik Interaktif -->
+            <div class="simulator-cell-container">
+              <div class="simulator-plate-header">
+                <span class="plate-title">Papan Taktil Braille</span>
+                <span class="plate-sub">Kolom Kiri (1,2,3) &bull; Kolom Kanan (4,5,6)</span>
+              </div>
+
+              <div class="braille-cell-interactive" role="group" aria-label="Sel Braille interaktif dengan 6 titik tekan">
+                <!-- Kolom Kiri: Titik 1, 2, 3 -->
+                <div class="braille-column">
+                  <button type="button" class="interactive-dot" id="sim-dot-1" role="switch" aria-checked="false" aria-label="Titik 1: Kiri Atas, status tidak aktif">
+                    <span class="dot-num-label" aria-hidden="true">1</span>
+                    <span class="dot-sub-label" aria-hidden="true">Kiri Atas</span>
+                  </button>
+                  <button type="button" class="interactive-dot" id="sim-dot-2" role="switch" aria-checked="false" aria-label="Titik 2: Kiri Tengah, status tidak aktif">
+                    <span class="dot-num-label" aria-hidden="true">2</span>
+                    <span class="dot-sub-label" aria-hidden="true">Kiri Tengah</span>
+                  </button>
+                  <button type="button" class="interactive-dot" id="sim-dot-3" role="switch" aria-checked="false" aria-label="Titik 3: Kiri Bawah, status tidak aktif">
+                    <span class="dot-num-label" aria-hidden="true">3</span>
+                    <span class="dot-sub-label" aria-hidden="true">Kiri Bawah</span>
+                  </button>
+                </div>
+
+                <!-- Kolom Kanan: Titik 4, 5, 6 -->
+                <div class="braille-column">
+                  <button type="button" class="interactive-dot" id="sim-dot-4" role="switch" aria-checked="false" aria-label="Titik 4: Kanan Atas, status tidak aktif">
+                    <span class="dot-num-label" aria-hidden="true">4</span>
+                    <span class="dot-sub-label" aria-hidden="true">Kanan Atas</span>
+                  </button>
+                  <button type="button" class="interactive-dot" id="sim-dot-5" role="switch" aria-checked="false" aria-label="Titik 5: Kanan Tengah, status tidak aktif">
+                    <span class="dot-num-label" aria-hidden="true">5</span>
+                    <span class="dot-sub-label" aria-hidden="true">Kanan Tengah</span>
+                  </button>
+                  <button type="button" class="interactive-dot" id="sim-dot-6" role="switch" aria-checked="false" aria-label="Titik 6: Kanan Bawah, status tidak aktif">
+                    <span class="dot-num-label" aria-hidden="true">6</span>
+                    <span class="dot-sub-label" aria-hidden="true">Kanan Bawah</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="simulator-shortcuts-hint">
+                <span>💡 Tekan tombol angka <strong>1 - 6</strong> pada keyboard | <kbd>C</kbd> untuk bersihkan</span>
+              </div>
+            </div>
+
+            <!-- Hasil Deteksi Huruf -->
+            <div class="simulator-result-box" aria-live="polite">
+              <span class="result-badge-label">HASIL DETEKSI REAL-TIME</span>
+              <div class="sim-output-char" id="sim-result-char" aria-label="Karakter hasil">—</div>
+              <div class="sim-output-dots" id="sim-result-dots">Belum ada titik yang ditekan</div>
+              <div class="sim-output-desc" id="sim-result-desc">Tekan titik 1-6 untuk mulai mengeksplorasi.</div>
+
+              <div class="simulator-actions">
+                <button type="button" class="btn btn-secondary" id="sim-speak-btn">
+                  <span aria-hidden="true">🔊</span> Ucapkan
+                </button>
+                <button type="button" class="btn btn-outline" id="sim-reset-btn">
+                  <span aria-hidden="true">↺</span> Bersihkan Sel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAGIAN 5: PERMAINAN KUIS BRAILLE -->
+    <section id="kuis" class="section" aria-labelledby="heading-kuis">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Uji Kemampuan &amp; Gamifikasi</span>
+          <h2 id="heading-kuis" class="section-title">Permainan Kuis Braille Interaktif</h2>
+          <p class="section-lead">
+            Uji pemahaman Anda melalui kuis seru ramah pembaca layar dan keyboard. Tersedia 3 mode permainan untuk semua tingkat kemampuan.
+          </p>
+        </div>
+
+        <div class="quiz-wrapper">
+          <!-- Top Bar Kuis: Pemilih Mode & Statistik Skor -->
+          <div class="quiz-top-bar">
+            <div class="quiz-mode-select-wrapper">
+              <label for="quiz-mode-select">Mode Kuis:</label>
+              <select id="quiz-mode-select" class="a11y-select" aria-label="Pilih mode permainan kuis">
+                <option value="guess-letter">Tebak Huruf Latin (Pilihan Ganda)</option>
+                <option value="build-dots">Susun Titik Braille (Hands-on)</option>
+                <option value="word-puzzle">Tebak Huruf dalam Kata</option>
+              </select>
+            </div>
+
+            <div class="quiz-stats-group">
+              <span class="stat-pill" id="quiz-progress">Soal 1 dari 10</span>
+              <span class="stat-pill stat-score">Skor: <strong id="quiz-score">0</strong></span>
+              <span class="stat-pill stat-streak">Streak: <strong id="quiz-streak">0</strong> 🔥</span>
+              <button type="button" class="btn btn-outline btn-sm" id="quiz-restart-btn" title="Mulai ulang kuis dari soal 1">
+                ↺ Ulang Kuis
+              </button>
+            </div>
+          </div>
+
+          <!-- Progress Bar Visual -->
+          <div class="quiz-progress-track" aria-hidden="true">
+            <div class="quiz-progress-fill" id="quiz-progress-fill" style="width: 10%;"></div>
+          </div>
+
+          <!-- Area Soal Dinamis -->
+          <div id="quiz-container" role="region" aria-label="Area Soal Kuis"></div>
+
+          <!-- Area Umpan Balik Jawaban (Benar / Salah) -->
+          <div id="quiz-feedback" class="quiz-feedback" role="alert" aria-live="assertive" aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <nav class="footer-nav" aria-label="Navigasi Bawah">
+        <a href="#sejarah">Sejarah</a>
+        <a href="#teori">Teori</a>
+        <a href="#alfabet">Alfabet</a>
+        <a href="#simulator">Simulator</a>
+        <a href="#kuis">Kuis</a>
+      </nav>
+      <div class="footer-divider" aria-hidden="true"></div>
+      <p class="footer-compliance">
+        <strong>Belajar Huruf Braille Interaktif</strong> &bull; Mematuhi Panduan Aksesibilitas Konten Web <strong>WCAG 2.1 / 2.2 Level AA &amp; AAA</strong>.
+      </p>
+      <p class="footer-subtext">
+        Didedikasikan untuk pendidikan inklusif, kemandirian disabilitas sensorik netra, serta literasi Braille global.
+      </p>
+    </div>
+  </footer>
+
+  <!-- TOMBOL KEMBALI KE ATAS -->
+  <button type="button" id="back-to-top" class="back-to-top-btn" aria-label="Kembali ke atas halaman">
+    <span aria-hidden="true">↑</span>
+  </button>
+
+  <!-- MODAL PANDUAN PINTASAN KEYBOARD (WCAG 2.1) -->
+  <div id="keyboard-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-shortcuts-title" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 id="modal-shortcuts-title">⌨️ Panduan Pintasan Papan Ketik</h2>
+        <button type="button" class="btn btn-outline btn-sm" id="btn-close-modal" aria-label="Tutup jendela panduan keyboard">✕ Tutup</button>
+      </div>
+
+      <table class="modal-shortcuts-table">
+        <caption class="sr-only">Daftar kombinasi tombol keyboard dan fungsinya</caption>
+        <thead>
+          <tr>
+            <th scope="col">Kombinasi Tombol</th>
+            <th scope="col">Fungsi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><kbd>Alt</kbd> + <kbd>T</kbd></td>
+            <td>Mengganti Tema Tampilan (Terang / Gelap / Kontras Tinggi)</td>
+          </tr>
+          <tr>
+            <td><kbd>Alt</kbd> + <kbd>S</kbd></td>
+            <td>Menyalakan / Mematikan Suara Pembaca (TTS)</td>
+          </tr>
+          <tr>
+            <td><kbd>1</kbd> sampai <kbd>6</kbd></td>
+            <td>Menekan / mengubah status Titik 1 sampai 6 pada Simulator &amp; Kuis</td>
+          </tr>
+          <tr>
+            <td><kbd>1</kbd> sampai <kbd>4</kbd></td>
+            <td>Memilih opsi jawaban 1 - 4 pada kuis pilihan ganda</td>
+          </tr>
+          <tr>
+            <td><kbd>C</kbd> atau <kbd>Esc</kbd></td>
+            <td>Membersihkan titik di simulator atau menutup dialog</td>
+          </tr>
+          <tr>
+            <td><kbd>Tab</kbd> / <kbd>Shift+Tab</kbd></td>
+            <td>Berpindah antar tombol dan kontrol interaktif</td>
+          </tr>
+          <tr>
+            <td><kbd>Spasi</kbd> / <kbd>Enter</kbd></td>
+            <td>Mengaktifkan tombol yang sedang dipilih</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="modal-footer-actions">
+        <button type="button" class="btn btn-primary" onclick="document.getElementById('btn-close-modal').click();">Saya Paham</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script Modules -->
+  <script src="js/braille-data.js"></script>
+  <script src="js/accessibility.js"></script>
+  <script src="js/simulator.js"></script>
+  <script src="js/quiz.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
